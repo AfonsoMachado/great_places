@@ -19,24 +19,33 @@ class PlacesListScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: Consumer<GreatPlaces>(
-          builder: (ctx, greatPlaces, child) => greatPlaces.itemsCount == 0
-              ? child!
-              : ListView.builder(
-                  itemCount: greatPlaces.itemsCount,
-                  itemBuilder: (ctx, i) => ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: FileImage(
-                        greatPlaces.getByIndex(i).image,
-                      ),
-                    ),
-                    title: Text(greatPlaces.getByIndex(i).title),
-                    onTap: () {},
+        body: FutureBuilder(
+          future: Provider.of<GreatPlaces>(context, listen: false).loadPlaces(),
+          builder: (ctx, snapshot) => snapshot.connectionState ==
+                  ConnectionState.waiting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Consumer<GreatPlaces>(
+                  builder: (ctx, greatPlaces, child) =>
+                      greatPlaces.itemsCount == 0
+                          ? child!
+                          : ListView.builder(
+                              itemCount: greatPlaces.itemsCount,
+                              itemBuilder: (ctx, i) => ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: FileImage(
+                                    greatPlaces.getByIndex(i).image,
+                                  ),
+                                ),
+                                title: Text(greatPlaces.getByIndex(i).title),
+                                onTap: () {},
+                              ),
+                            ),
+                  child: const Center(
+                    child: Text('Nenhum local cadastrado!'),
                   ),
                 ),
-          child: const Center(
-            child: Text('Nenhum local cadastrado!'),
-          ),
         ));
   }
 }
