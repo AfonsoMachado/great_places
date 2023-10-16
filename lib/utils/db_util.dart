@@ -12,7 +12,10 @@ class DBUtil {
           'CREATE TABLE places ('
           'id TEXT PRIMARY KEY, '
           'title TEXT, '
-          'image TEXT'
+          'image TEXT, '
+          'latitude REAL, '
+          'longitude REAL, '
+          'address TEXT'
           ')',
         );
       },
